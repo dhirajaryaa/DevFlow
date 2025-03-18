@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   checkUserAuth,
+  deleteUser,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -17,10 +18,12 @@ userRouter.post("/login", loginUser);
 // protected routes
 userRouter.post("/token", verifyJWT, refreshAccessToken);
 userRouter.post("/logout", verifyJWT, logoutUser);
-userRouter.get("/auth", verifyJWT, checkUserAuth);
+userRouter.get("/", verifyJWT, checkUserAuth);
 userRouter.put(
   "/profile/avatar",
   upload.fields([{ name: "avatar", maxCount: 1 }]),
   verifyJWT,
   updateUserAvatar
 );
+userRouter.delete("/", verifyJWT, deleteUser);
+

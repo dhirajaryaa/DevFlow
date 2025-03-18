@@ -150,7 +150,7 @@ const updateUserAvatar = AsyncHandler(async function (req, res) {
   if (user?.avatar?.publicId && user?.avatar?.url) {
     await removeFromCloudinary(user?.avatar?.publicId);
   }
-  const avatar = await uploadOnCloudinary(req.files?.avatar[0]?.path);
+  const avatar = await uploadOnCloudinary(localAvatarFile);
 
   await User.findByIdAndUpdate(user._id, {
     avatar: {
@@ -164,6 +164,22 @@ const updateUserAvatar = AsyncHandler(async function (req, res) {
     .json(new ApiResponse(200, "Avatar Successfully uploaded :) "));
 });
 
+const deleteUser = AsyncHandler(async function (req, res) {
+  const user = await User.findById(req?.user?._id).select(
+    "-password -refreshToken"
+  );
+  if (!user) {
+    throw new ApiError(401, "Unauthorized access");
+  }
+  // old avatar remove
+  if (user?.avatar?.publicId != "" && user?.avatar?.url != "") {
+    await removeFromCloudinary(user?.avatar?.publicId);
+  }
+  await User.findByIdAndDelete(user?._id);
+
+  return res.status(200).json(new ApiResponse(200, "user Deleted! "));
+});
+
 export {
   registerUser,
   loginUser,
@@ -171,4 +187,5 @@ export {
   refreshAccessToken,
   checkUserAuth,
   updateUserAvatar,
+  deleteUser,
 };
