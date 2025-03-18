@@ -26,6 +26,9 @@ app.use(cookieParser({
 
 app.use(express.static("./public"));
 
+// setup Router 
+import { userRouter } from './routers/user.routes.js';
+app.use("/api/v1/users/",userRouter)
 
 // setup 💀 global error middlewares 
 import { errorHandler } from './middlewares/error.middleware.js';
