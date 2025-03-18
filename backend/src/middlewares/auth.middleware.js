@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const verifyJWT = AsyncHandler(async function (req, res, next) {
   const incomingToken =
-    req.cookies.accessToken || req.headers.authorization.split("Bearer ")[0];
+    req.cookies?.accessToken || req.headers?.authorization?.split("Bearer ")[0];
   if (!incomingToken) {
     throw new ApiError(400, "Invalid Credential");
   }
@@ -17,9 +17,7 @@ export const verifyJWT = AsyncHandler(async function (req, res, next) {
   if (!decodedToken) {
     throw new ApiError(401, "Unauthorized");
   }
-  const user = await User.findById(decodedToken._id).select(
-    "-password -refreshToken"
-  );
-  req.user = user;
+  
+  req.user = decodedToken;
   next();
 });

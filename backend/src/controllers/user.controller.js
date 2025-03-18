@@ -83,4 +83,21 @@ const loginUser = AsyncHandler(async function (req, res) {
     );
 });
 
-export { registerUser, loginUser };
+const logoutUser = AsyncHandler(async function (req,res) {
+  const user = await User.findById(req?.user?._id);
+  if (!user) {
+    throw new ApiError(401, "Unauthorized user");
+  };
+  user.refreshToken = "";
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", tokenOptions)
+    .clearCookie("refreshToken", tokenOptions)
+    .json(
+      new ApiResponse(200, "User logout successful", {})
+    );
+})
+
+export { registerUser, loginUser,logoutUser };
