@@ -4,6 +4,10 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { User } from "../models/user.model.js";
 import { nanoid } from "nanoid";
 import { tokenOptions } from "../config/index.js";
+import {
+  removeFromCloudinary,
+  uploadOnCloudinary,
+} from "../services/cloudinary.service.js";
 
 const generateAccessAndRefreshToken = async (user) => {
   const accessToken = await user.generateAccessToken();
@@ -133,4 +137,38 @@ const checkUserAuth = AsyncHandler(async function (req, res) {
   return res.status(200).json(new ApiResponse(200, "User is Authorized", user));
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken,checkUserAuth };
+const updateUserAvatar = AsyncHandler(async function (req, res) {
+  const localAvatarFile = req.files?.avatar[0]?.path || "";
+
+  const user = await User.findById(req?.user?._id).select(
+    "-password -refreshToken"
+  );
+  if (!user) {
+    throw new ApiError(401, "Unauthorized user");
+  }
+  // old avatar remove
+  if (user?.avatar?.publicId && user?.avatar?.url) {
+    await removeFromCloudinary(user?.avatar?.publicId);
+  }
+  const avatar = await uploadOnCloudinary(req.files?.avatar[0]?.path);
+
+  await User.findByIdAndUpdate(user._id, {
+    avatar: {
+      url: avatar?.secure_url || "",
+      publicId: avatar?.public_id || "",
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Avatar Successfully uploaded :) "));
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  checkUserAuth,
+  updateUserAvatar,
+};

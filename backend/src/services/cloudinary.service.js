@@ -24,4 +24,13 @@ const uploadOnCloudinary = AsyncHandler(async (localFilePath) => {
   return res;
 });
 
-export { uploadOnCloudinary };
+const removeFromCloudinary = AsyncHandler(async function (publicId) {
+  if (!publicId) {
+    throw new ApiError(400, "Public Id Missing!");
+  }
+  const res = await cloudinary.uploader.destroy(publicId);
+
+  return res
+})
+
+export { uploadOnCloudinary,removeFromCloudinary };
