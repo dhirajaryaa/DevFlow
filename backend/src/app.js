@@ -25,3 +25,8 @@ app.use(cookieParser({
 }));
 
 app.use(express.static("./public"));
+
+
+// setup 💀 global error middlewares 
+import { errorHandler } from './middlewares/error.middleware.js';
+app.use(errorHandler)
