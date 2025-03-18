@@ -56,7 +56,7 @@ const loginUser = AsyncHandler(async function (req, res) {
   if (!user) {
     throw new ApiError(400, "User not exists");
   }
-  // check password correct or not 
+  // check password correct or not
   const isPasswordCorrect = await user.isPasswordCorrect(password);
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Password Incorrect!");
@@ -72,8 +72,8 @@ const loginUser = AsyncHandler(async function (req, res) {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken,tokenOptions)
-    .cookie("refreshToken", refreshToken,tokenOptions)
+    .cookie("accessToken", accessToken, tokenOptions)
+    .cookie("refreshToken", refreshToken, tokenOptions)
     .json(
       new ApiResponse(200, "user Login Successful", {
         user: loginUser,
@@ -83,11 +83,11 @@ const loginUser = AsyncHandler(async function (req, res) {
     );
 });
 
-const logoutUser = AsyncHandler(async function (req,res) {
+const logoutUser = AsyncHandler(async function (req, res) {
   const user = await User.findById(req?.user?._id);
   if (!user) {
     throw new ApiError(401, "Unauthorized user");
-  };
+  }
   user.refreshToken = "";
   await user.save({ validateBeforeSave: false });
 
@@ -95,9 +95,42 @@ const logoutUser = AsyncHandler(async function (req,res) {
     .status(200)
     .clearCookie("accessToken", tokenOptions)
     .clearCookie("refreshToken", tokenOptions)
-    .json(
-      new ApiResponse(200, "User logout successful", {})
-    );
-})
+    .json(new ApiResponse(200, "User logout successful", {}));
+});
 
-export { registerUser, loginUser,logoutUser };
+const refreshAccessToken = AsyncHandler(async function (req, res) {
+  const user = await User.findById(req?.user?._id);
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user
+  );
+
+  const loginUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, tokenOptions)
+    .cookie("refreshToken", refreshToken, tokenOptions)
+    .json(
+      new ApiResponse(200, "Access Token Refresh Successful", {
+        user: loginUser,
+        accessToken,
+        refreshToken,
+      })
+    );
+});
+
+const checkUserAuth = AsyncHandler(async function (req, res) {
+  const user = await User.findById(req?.user?._id).select(
+    "-password -refreshToken"
+  );
+
+  if (!user) {
+    throw new ApiError(401, "Unauthorized user");
+  }
+  return res.status(200).json(new ApiResponse(200, "User is Authorized", user));
+});
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken,checkUserAuth };
