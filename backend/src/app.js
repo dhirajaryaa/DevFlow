@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from "cors"
 import cookieParser from 'cookie-parser'
-import { corsConfig } from './config';
+import { corsConfig } from './config/index.js';
 
-const app = express();
+export const app = express();
 
 // setup middlewares 
 app.use(express.urlencoded({
@@ -25,6 +25,3 @@ app.use(cookieParser({
 }));
 
 app.use(express.static("./public"));
-
-
-export default app

@@ -1,11 +1,11 @@
-import dotenv from "dotenv";
+ import dotenv from 'dotenv';
 
 dotenv.config({
   path: "./.env",
 });
 
 const config = {
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 5000,
   mongodb_uri: process.env.MONGODB_URI,
   db_name: process.env.DB_NAME,
 };
@@ -25,9 +25,10 @@ const jwtConfig = {
 
 const corsConfig = {
   production: process.env.PRODUCTION === "true",
-  methods: process.env.METHODS.split(","),
-  allowedUrl: JSON.parse(process.env.ALLOWED_URL),
+  methods: process.env.METHODS ? process.env.METHODS.split(",") : [],
+  allowedUrl: process.env.ALLOWED_URL ? process.env.ALLOWED_URL.split(",") : [],
 };
+
 
 export  {
   config,
