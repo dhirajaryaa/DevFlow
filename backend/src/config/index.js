@@ -1,4 +1,4 @@
- import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config({
   path: "./.env",
@@ -29,10 +29,10 @@ const corsConfig = {
   allowedUrl: process.env.ALLOWED_URL ? process.env.ALLOWED_URL.split(",") : [],
 };
 
-
-export  {
-  config,
-  cloudinaryConfig,
-  jwtConfig,
-  corsConfig,
+const tokenOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
 };
+
+export { config, cloudinaryConfig, jwtConfig, corsConfig, tokenOptions };
