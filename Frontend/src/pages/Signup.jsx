@@ -11,10 +11,11 @@ function Signup() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
-    await onSignup(data).then((data) => {
+    await onSignup(data).unwrap().then(() => {
       navigate('/login')
     });
   };
+  
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg mt-14">

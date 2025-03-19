@@ -14,7 +14,7 @@ export const AuthApi = apiSlice.injectEndpoints({
             query: (userData) => ({
                 url: "/users/login",
                 method: "POST",
-                body: userData
+                body: JSON.stringify(userData)
             }),
             transformResponse:(data)=>data?.data
         }),
