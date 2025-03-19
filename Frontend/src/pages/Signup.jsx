@@ -1,7 +1,7 @@
-import { RiLoaderLine } from "react-icons/ri";
 import PasswordInput from "../components/Input/PasswordInput";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegisterUserMutation } from "../app/auth/authApi";
+import { LuLoaderCircle } from "react-icons/lu";
 
 function Signup() {
   const [onSignup, { isLoading }] = useRegisterUserMutation();
@@ -50,7 +50,7 @@ function Signup() {
 
           <div className="mt-5">
             <button className=" primary-btn mx-auto">
-              {isLoading ? <RiLoaderLine /> : "Signup"}
+              {isLoading ? <LuLoaderCircle  className="size-6 animate-spin mx-auto" /> : "Signup"}
             </button>
 
             <p className="mt-4 text-sm text-gray-500 text-center">

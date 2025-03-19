@@ -2,7 +2,7 @@ import React from "react";
 import Input from "../components/Input/PasswordInput";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../app/auth/authApi";
-import { RiLoaderLine } from "react-icons/ri";
+import { LuLoaderCircle } from "react-icons/lu";
 import { setUser } from "../app/auth/authReducer";
 import { useDispatch } from "react-redux";
 
@@ -44,7 +44,7 @@ function Login() {
 
           <div className="mt-5">
             <button className=" primary-btn mx-auto">
-              {isLoading ? <RiLoaderLine /> : "Login"}
+              {isLoading ? <LuLoaderCircle  className="size-6 animate-spin mx-auto" /> : "Login"}
             </button>
 
             <p className="mt-4 text-sm text-gray-500 text-center">
