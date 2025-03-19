@@ -25,7 +25,7 @@ export const AuthApi = apiSlice.injectEndpoints({
             }),
             transformResponse:(data)=>data?.data
         }),
-        authUser : builder.query({
+        authUser : builder.mutation({
             query: () => ({
                 url: "/users/",
                 method: "GET"
@@ -36,4 +36,4 @@ export const AuthApi = apiSlice.injectEndpoints({
     })
 });
 
-export const {useLoginUserMutation,useRegisterUserMutation,useLogoutUserMutation,useAuthUserQuery} = AuthApi;
+export const {useLoginUserMutation,useRegisterUserMutation,useLogoutUserMutation,useAuthUserMutation} = AuthApi;
