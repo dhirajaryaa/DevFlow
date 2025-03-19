@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-function Input() {
+function PasswordInput() {
   const [showPassword, setShowPassword] = useState(false);
 
   function togglePassword() {
@@ -38,4 +38,4 @@ function Input() {
   );
 }
 
-export default Input;
+export default PasswordInput;

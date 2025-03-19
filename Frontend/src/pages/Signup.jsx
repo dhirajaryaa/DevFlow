@@ -1,8 +1,20 @@
-import React from "react";
-import Input from "../components/Input/PasswordInput";
-import { Link } from "react-router-dom";
+import { RiLoaderLine } from "react-icons/ri";
+import PasswordInput from "../components/Input/PasswordInput";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "../app/auth/authApi";
 
 function Signup() {
+  const [onSignup, { isLoading }] = useRegisterUserMutation();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    await onSignup(data).then((data) => {
+      navigate('/login')
+    });
+  };
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg mt-14">
@@ -10,31 +22,39 @@ function Signup() {
           Signup
         </h1>
 
-        <form action="#" class="mt-10 w-full mx-auto max-w-sm">
-          <div class="mt-4">
-            <label for="name" class="block text-sm font-medium text-gray-700">
+        <form onSubmit={handleSubmit} className="mt-10 w-full mx-auto max-w-sm">
+          <div className="mt-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Name
             </label>
 
-            <input type="text" id="name" name="name" class="input-box" />
+            <input type="text" id="name" name="name" className="input-box" />
           </div>
 
-          <div class="mt-4">
-            <label for="Email" class="block text-sm font-medium text-gray-700">
+          <div className="mt-4">
+            <label
+              htmlFor="Email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
 
-            <input type="email" id="Email" name="email" class="input-box" />
+            <input type="email" id="Email" name="email" className="input-box" />
           </div>
 
-          <Input />
+          <PasswordInput />
 
-          <div class="mt-5">
-            <button class=" primary-btn mx-auto">Signup</button>
+          <div className="mt-5">
+            <button className=" primary-btn mx-auto">
+              {isLoading ? <RiLoaderLine /> : "Signup"}
+            </button>
 
-            <p class="mt-4 text-sm text-gray-500 sm:mt-0 text-center">
+            <p className="mt-4 text-sm text-gray-500 text-center">
               Already have an account?
-              <Link to={"/login"} class="ml-1 text-gray-700 underline">
+              <Link to={"/login"} className="ml-1 text-gray-700 underline">
                 Login
               </Link>
               .

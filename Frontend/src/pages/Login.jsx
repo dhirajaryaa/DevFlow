@@ -10,24 +10,24 @@ function Login() {
           Login
         </h1>
 
-        <form action="#" class="mt-10 w-full mx-auto max-w-sm">
+        <form action="#" className="mt-10 w-full mx-auto max-w-sm">
           
-          <div class="mt-4">
-            <label for="Email" class="block text-sm font-medium text-gray-700">
+          <div className="mt-4">
+            <label htmlFor="Email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
 
-            <input type="email" id="Email" name="email" class="input-box" />
+            <input type="email" id="Email" name="email" className="input-box" />
           </div>
 
           <Input />
 
-          <div class="mt-5">
-            <button class=" primary-btn mx-auto">Login</button>
+          <div className="mt-5">
+            <button className=" primary-btn mx-auto">Login</button>
 
-            <p class="mt-4 text-sm text-gray-500 sm:mt-0 text-center">
+            <p className="mt-4 text-sm text-gray-500 sm:mt-0 text-center">
               Don't have an account?
-              <Link to={"/signup"} class="ml-1 text-gray-700 underline">
+              <Link to={"/signup"} className="ml-1 text-gray-700 underline">
                 Signup
               </Link>
               .
