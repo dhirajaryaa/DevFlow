@@ -24,14 +24,14 @@ const jwtConfig = Object.freeze({
 });
 
 const corsConfig = Object.freeze({
-  production: process.env.PRODUCTION === "true",
-  methods: process.env.METHODS ? process.env.METHODS.split(",") : [],
-  allowedUrl: process.env.ALLOWED_URL ? process.env.ALLOWED_URL.split(",") : [],
+  production: process.env.PRODUCTION, 
+  methods: process.env.METHODS ,
+  allowedUrl: process.env.ALLOWED_URL,
 });
 
 const tokenOptions = Object.freeze({
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  secure: process.env.PRODUCTION,
   sameSite: "strict",
 });
 

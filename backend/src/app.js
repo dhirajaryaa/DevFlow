@@ -18,11 +18,7 @@ app.use(cors({
     credentials:true,
 }));
 
-app.use(cookieParser({
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // set to true in production
-    sameSite: 'strict'
-}));
+app.use(cookieParser());
 
 app.use(express.static("./public"));
 
